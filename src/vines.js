@@ -5,6 +5,8 @@ import random from "./util/random.js";
 
 import Point from "./object/Point.js";
 import Obstical from "./object/Obstical.js";
+import CollisionMap from "./object/CollisionMap.js";
+
 
 (()=>{
 
@@ -70,6 +72,13 @@ import Obstical from "./object/Obstical.js";
         }
         
         updateCollisionMap(){
+
+            if( this.collisionMap ){
+                this.collisionMap.update(this.obsticals);
+            } else {
+                this.collisionMap = new CollisionMap(this.obsticals);
+            }
+
             let canvas = document.createElement("canvas");
             canvas.width = this.canvas.width / this.collisionScale;
             canvas.height = this.canvas.height / this.collisionScale;
@@ -95,6 +104,13 @@ import Obstical from "./object/Obstical.js";
                 ctx.fill();
             });
             this.collisionMap = canvas;
+            /*var matrix = [
+                [0, 0, 0, 1, 0],
+                [1, 0, 0, 0, 1],
+                [0, 0, 1, 0, 0],
+            ];
+            var grid = new PF.Grid(matrix);*/
+
         }
         
         
@@ -102,7 +118,7 @@ import Obstical from "./object/Obstical.js";
             if( !true ) return;
             this.ctx.fillStyle = "black";
             this.ctx.drawImage(
-                this.collisionMap,0,0,
+                this.collisionMap.canvas,0,0,
                 this.canvas.width,this.canvas.height
             );
             
@@ -130,26 +146,6 @@ import Obstical from "./object/Obstical.js";
             this.vinePoints = [];
             this.vinePoints.push(new Point(this.startPoint.x,this.startPoint.y));
             this.vinePoints.push(new Point(this.endPoint.x,this.endPoint.y));
-            /* for(let i = 0 ; i < 5 ; i++){
-                this.subDivide(i);
-            } */
-            
-        }
-        
-        subDivide(iter){
-            let newPoints = [];
-            this.vinePoints.forEach((thisPoint,i)=>{
-                let nextPoint = this.vinePoints[i+1];
-                if( nextPoint ){
-                    let midX = (thisPoint.x + nextPoint.x) / 2;
-                    let midY = (thisPoint.y + nextPoint.y) / 2;
-                    newPoints.push(thisPoint);
-                    newPoints.push(new Point(midX,midY));
-                } else {
-                    newPoints.push(thisPoint);
-                }
-            });
-            this.vinePoints = newPoints;
         }
         
         
