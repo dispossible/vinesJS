@@ -1,0 +1,32 @@
+{
+  "name": "vinesjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "vines.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dispossible/vinesJS.git"
+  },
+  "author": "Dispossible",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dispossible/vinesJS/issues"
+  },
+  "homepage": "https://github.com/dispossible/vinesJS#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-webpack": "^1.5.0",
+    "pathfinding": "^0.4.18",
+    "webpack": "^3.3.0"
+  }
+}

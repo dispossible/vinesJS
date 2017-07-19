@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo 1</title>
+    <style>
+        body {
+            background: #ddd;
+        }
+
+        [al-wrap] {
+            max-width: 1000px;
+            padding: 32px 0;
+            margin: 0 auto;
+        }
+
+        [am-ban] {
+            min-height: 400px;
+            height: 60vh;
+            background: white;
+            position: relative;
+        }
+
+        [am-ban] canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        [am-ban-obj]{
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            padding: 5%;
+            background: rgba(255,0,0,0.2);
+        }
+
+        [am-ban-obj~="one"] {
+            border-radius: 99px;
+            left: 10%;
+            top: 45%;
+            padding: 8%;
+        }
+
+        [am-ban-obj~="two"] {
+            border-radius: 30px;
+            left: 70%;
+            top: 20%;
+            padding: 5%;
+        }
+
+        [am-ban-obj~="three"] {
+            left: 52%;
+            top: 35%;
+            padding: 5%;
+        }
+
+        [am-ban-obj~="four"] {
+            border-radius: 99px;
+            left: 60%;
+            top: 65%;
+            padding: 10%;
+        }
+
+        [am-ban-obj~="five"] {
+            left: 10%;
+            top: 10%;
+            padding: 8%;
+        }
+    </style>
+</head>
+<body>
+    <main al-wrap>
+        <section am-ban js-vines>
+            <div am-ban-obj="one"></div>
+            <div am-ban-obj="two"></div>
+            <div am-ban-obj="three"></div>
+            <div am-ban-obj="four"></div>
+            <div am-ban-obj="five"></div>
+        </section>
+    </main>
+    <script src="../dist/vines.min.js"></script>
+    <script>
+        new Vines(document.querySelector("[js-vines]"),{x: 90, y: 100},{x: 10, y: 0});
+    </script>
+</body>
+</html>
