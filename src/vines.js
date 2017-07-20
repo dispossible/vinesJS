@@ -17,8 +17,6 @@ import CollisionMap from "./object/CollisionMap.js";
             
             this.el = el;
 
-            this.collisionScale = 10;
-
             this.startPoint = startPoint;
             this.endPoint = endPoint;
             
@@ -72,45 +70,10 @@ import CollisionMap from "./object/CollisionMap.js";
         }
         
         updateCollisionMap(){
-
-            if( this.collisionMap ){
-                this.collisionMap.update(this.obsticals);
-            } else {
-                this.collisionMap = new CollisionMap(this.obsticals);
+            if( !this.collisionMap ){
+                this.collisionMap = new CollisionMap(this.canvas.width, this.canvas.height);
             }
-
-            let canvas = document.createElement("canvas");
-            canvas.width = this.canvas.width / this.collisionScale;
-            canvas.height = this.canvas.height / this.collisionScale;
-            let ctx = canvas.getContext("2d");
-            this.obsticals.forEach(obs=>{
-                ctx.beginPath();
-                if( obs.radius >= 25 ){
-                    ctx.arc(
-                        obs.left/this.collisionScale + (obs.width/(2*this.collisionScale)),
-                        obs.top/this.collisionScale + (obs.height/(2*this.collisionScale)),
-                        obs.width/(2*this.collisionScale),
-                        0,
-                        Math.PI*2
-                    );
-                } else {
-                    ctx.rect(
-                        obs.left/this.collisionScale,
-                        obs.top/this.collisionScale,
-                        obs.width/this.collisionScale,
-                        obs.height/this.collisionScale
-                    );
-                }
-                ctx.fill();
-            });
-            this.collisionMap = canvas;
-            /*var matrix = [
-                [0, 0, 0, 1, 0],
-                [1, 0, 0, 0, 1],
-                [0, 0, 1, 0, 0],
-            ];
-            var grid = new PF.Grid(matrix);*/
-
+            this.collisionMap.update(this.obsticals, this.canvas.width, this.canvas.height);
         }
         
         
@@ -145,6 +108,38 @@ import CollisionMap from "./object/CollisionMap.js";
         plotVine(){
             this.vinePoints = [];
             this.vinePoints.push(new Point(this.startPoint.x,this.startPoint.y));
+
+
+            let matrix = this.collisionMap.getGrid();
+            let grid = new PF.Grid(matrix);
+
+            let sX = Math.round(( (this.canvas.width/100) * this.startPoint.x ) / this.collisionMap.scale);
+            let sY = Math.round(( (this.canvas.height/100) * this.startPoint.y ) / this.collisionMap.scale);
+            let eX = Math.round(( (this.canvas.width/100) * this.endPoint.x ) / this.collisionMap.scale);
+            let eY = Math.round(( (this.canvas.height/100) * this.endPoint.y ) / this.collisionMap.scale);
+
+            if( sX >= this.collisionMap.width ) sX = this.collisionMap.width - 1;
+            if( sY >= this.collisionMap.height ) sY = this.collisionMap.height - 1;
+            if( eX >= this.collisionMap.width ) eX = this.collisionMap.width - 1;
+            if( eY >= this.collisionMap.height ) eY = this.collisionMap.height - 1;
+
+            console.log(matrix);
+            console.log(this.collisionMap.width,this.collisionMap.height);
+            console.log(sX,sY,eX,eY);
+
+            let finder = new PF.AStarFinder({
+                    allowDiagonal: true,
+                    dontCrossCorners: true
+                });
+            let path = finder.findPath(sX,sY,eX,eY,grid);
+
+            path.forEach(point=>{
+                let x = (point[0] / this.collisionMap.width) * 100;
+                let y = (point[1] / this.collisionMap.height) * 100;
+                this.vinePoints.push(new Point(x,y));
+            });
+
+
             this.vinePoints.push(new Point(this.endPoint.x,this.endPoint.y));
         }
         
